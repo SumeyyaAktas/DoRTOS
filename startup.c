@@ -8,7 +8,7 @@ extern void main(void);
 const void * const _Vectors[] __attribute__((section(".isr_vector"))) = 
 {
     &_stack_top,
-    Reset_Handler
+    Reset_Handler 
 };
 
 void Reset_Handler(void)
