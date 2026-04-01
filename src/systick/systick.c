@@ -14,7 +14,7 @@ void SysTick_Handler(void)
 void systick_init(void)
 {
     SYST_CSR_REG = 0;
-    SYST_RVR_REG = 12000;
+    SYST_RVR_REG = 11999;
     SYST_CVR_REG = 0;
 
     SYST_CSR_REG = CSR_ENABLE | CSR_TICKINT | CSR_CLKSOURCE;
