@@ -1,47 +1,61 @@
 #include "uart/pl011.h"
 #include "systick/systick.h"
+#include "task/task.h"
 
-void print_uint32(uint32_t n)
+void task_a(void)
 {
-    if (n < 10)
+    while (1)
     {
-        uart_putc('0' + n);
-        return;
+        uart_puts("Task A\n");
     }
-
-    print_uint32(n / 10);
-    uart_putc('0' + (n % 10));
 }
 
-void hcf(void)
+void task_b(void)
 {
-    for (;;)
+    while (1)
     {
-        __asm__ volatile("wfi");
+        uart_puts("Task B\n");
     }
 }
 
 void main(void)
 {
     uart_init();
-    uart_puts("\nHello from TinyAbyss!\n");
+    uart_puts("\nHello from TinyAbyss!\n\n");
 
     systick_init();
     __asm__ volatile("cpsie i");
 
-    uint32_t last_tick = 0;
+    // uint32_t last_tick = 0;
 
-    while (1)
+    // while (1)
+    // {
+    //     if (global_tick_counter != last_tick)
+    //     {
+    //         last_tick = global_tick_counter;
+
+    //         uart_puts("Tick: ");
+    //         print_uint32(last_tick); 
+    //         uart_puts("\n");
+    //     }
+    // }
+
+    TCB_t tcb_a;
+    TCB_t tcb_b;
+
+    task_create(&tcb_a, task_a, 1);
+    task_create(&tcb_b, task_b, 2);
+
+    uart_puts("tcb_a Stack Pointer: ");
+    print_uint32((uint32_t)tcb_a.stack_pointer);
+    uart_puts("\n");
+
+    uart_puts("tcb_b Stack Pointer: ");
+    print_uint32((uint32_t)tcb_b.stack_pointer);
+    uart_puts("\n");
+
+    for (;;)
     {
-        if (global_tick_counter != last_tick)
-        {
-            last_tick = global_tick_counter;
-
-            uart_puts("Tick: ");
-            print_uint32(last_tick); 
-            uart_puts("\n");
-        }
+        __asm__ volatile("wfi");
     }
-
-    hcf();
 }
