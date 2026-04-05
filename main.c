@@ -21,7 +21,7 @@ void task_b(void)
 void main(void)
 {
     uart_init();
-    uart_puts("\nHello from TinyAbyss!\n\n");
+    uart_puts("\nHello from DoRTOS!\n\n");
 
     systick_init();
     __asm__ volatile("cpsie i");
@@ -45,6 +45,9 @@ void main(void)
 
     task_create(&tcb_a, task_a, 1);
     task_create(&tcb_b, task_b, 2);
+
+    task_register(&tcb_a); 
+    task_register(&tcb_b); 
 
     uart_puts("tcb_a Stack Pointer: ");
     print_uint32((uint32_t)tcb_a.stack_pointer);
