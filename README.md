@@ -52,7 +52,7 @@ make clean && make run
 
 ### Expected terminal output
 
-<img src="assets/terminal_output.png" width="100" height="100">
+<img src="assets/terminal_output.png" width="500" height="500">
  
 With the priority inheritance demo in `main.c` (task_low priority 1, task_med priority 2, task_high priority 3), you should observe:
  
